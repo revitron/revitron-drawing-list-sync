@@ -5,27 +5,18 @@ from os import system
 from os.path import dirname, join
 from tempfile import mkdtemp
 from System.Collections.Generic import Dictionary
+from pyrevit import forms
 
 CONFIG_KEY = 'revitron.drawing-list-sync'
 PARAM_MAX_COLS = 25
 
 
-def createCsvFiles(xls):
+def createCsvFile(xls, worksheet):
 	tmp = mkdtemp()
 	convert = join(dirname(__file__), 'convert.bat')
 	csvSheets = join(tmp, 'sheets.csv')
-	csvGroups = join(tmp, 'groups.csv')
-	system('{} {} {} {}'.format(convert, xls, csvSheets, csvGroups))
-	return csvSheets, csvGroups
-
-
-def getGroupsFromCsv(file):
-	groups = []
-	with open(file) as f:
-		reader = csv.DictReader(f, ['a', 'b', 'category'])
-		for row in reader:
-			groups.append(row['category'])
-	return groups
+	system('{} {} {} {}'.format(convert, xls, worksheet, csvSheets))
+	return csvSheets
 
 
 def getParameterCols(rows, parameterRow):
@@ -55,15 +46,36 @@ def getSheetsFromCsv(file, parameterRow):
 	return drawingList
 
 
+def confirmParameterCreation(key):
+	optionCreate = 'Create parameter "{}"'.format(key)
+	optionCancel = 'Skip parameter'
+	res = forms.alert(
+	    'The parameter "{}" does not exist in the current model. Do you want to create it?'
+	    .format(key),
+	    options=[optionCreate, optionCancel]
+	)
+	if res == optionCreate:
+		return True
+	return False
+
+
 def createOrUpdateSheets(drawingList, collection):
+	skipped = []
 	for item in drawingList.all():
 		number = item.Key
 		data = item.Value
 		sheet = collection.get(number)
 		if not sheet:
 			sheet = createSheet()
-		for key, value in data.items():
-			_(sheet).set(key, value)
+		if _(sheet).isNotOwned():
+			for key, value in data.items():
+				if not _(sheet).getParameter(key).exists():
+					if key in skipped:
+						continue
+					if not confirmParameterCreation(key):
+						skipped.append(key)
+						continue
+				_(sheet).set(key, value)
 
 
 def createSheet():
@@ -75,11 +87,15 @@ class Config:
 
 	xlsFile = ''
 	parameterRow = ''
+	revisionsRow = ''
+	worksheet = ''
 
 	def __init__(self):
 		config = revitron.DocumentConfigStorage().get(CONFIG_KEY, dict())
 		self.xlsFile = config.get('xlsFile', '')
 		self.parameterRow = int(config.get('parameterRow', '1'))
+		self.revisionsRow = int(config.get('revisionsRow', '2'))
+		self.worksheet = config.get('worksheet', 'Sheets')
 
 
 class GenericCollection:
