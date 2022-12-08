@@ -1,3 +1,4 @@
 layout:
   - Sync[title:Synchronize]
   - Config[title:Configure]
+  - Help
