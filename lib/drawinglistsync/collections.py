@@ -1,6 +1,12 @@
 import re
+import datetime
 from revitron import DB
 from System.Collections.Generic import Dictionary
+
+
+def normalizeDateString(dateString):
+	date = datetime.datetime.strptime(dateString, r'%d.%m.%Y')
+	return date.strftime(r'%d.%m.%Y')
 
 
 class GenericCollection(object):
@@ -37,12 +43,15 @@ class Revision(object):
 
 	def __init__(self, index, text):
 		matches = re.match('^(\d{1,2}\.\d{1,2}\.\d{4})(.*)$', text, re.MULTILINE)
-		self.index = index
-		self.date = matches.group(1)
-		self.title = matches.group(2)
+		self.index = index.ljust(5)
+		try:
+			self.date = normalizeDateString(matches.group(1)).ljust(14)
+			self.title = matches.group(2).lstrip()
+		except:
+			pass
 
 	def __str__(self):
-		return '{}\t{}\t{}'.format(self.index, self.date, self.title)
+		return '{}{}{}'.format(self.index, self.date, self.title)
 
 
 class Revisions(GenericCollection):
