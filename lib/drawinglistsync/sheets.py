@@ -15,7 +15,7 @@ def confirmParameterCreation(key):
 	return False
 
 
-def createOrUpdateSheets(drawingList, modelSheetCollection):
+def createOrUpdateSheets(drawingList, revisionList, modelSheetCollection, revisionsField):
 	skipped = []
 	for item in drawingList.all():
 		number = item.Key
@@ -32,6 +32,9 @@ def createOrUpdateSheets(drawingList, modelSheetCollection):
 						skipped.append(key)
 						continue
 				_(sheet).set(key, value)
+				sheetRevisions = revisionList.get(number)
+				if sheetRevisions:
+					_(sheet).set(revisionsField, str(sheetRevisions), 'MultilineText')
 
 
 def createSheet():

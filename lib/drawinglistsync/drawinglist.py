@@ -39,4 +39,4 @@ def getDrawinglistFromCsv(file, parameterRow):
 				name = item[1]
 				data[name] = row[col]
 			drawingList.add(nr, data)
-	return drawingList
+	return drawingList, sheetNumberCol
