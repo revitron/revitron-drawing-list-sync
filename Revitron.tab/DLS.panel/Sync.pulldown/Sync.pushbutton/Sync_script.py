@@ -1,5 +1,5 @@
 from revitron import Filter, Transaction, _
-from drawinglistsync import Config, createCsvFile, getSheetsFromCsv, createOrUpdateSheets, ModelSheetCollection
+from drawinglistsync import Config, createCsvFile, getDrawinglistFromCsv, createOrUpdateSheets, ModelSheetCollection
 from pyrevit import forms
 
 config = Config()
@@ -13,7 +13,7 @@ for item in Filter().byCategory('Sheets').noTypes().getElements():
 	collection.add(_(item).get('Sheet Number'), item)
 
 csvSheets = createCsvFile(config.xlsFile, config.worksheet)
-sheetData = getSheetsFromCsv(csvSheets, config.parameterRow)
+sheetData = getDrawinglistFromCsv(csvSheets, config.parameterRow)
 
 with Transaction():
 	createOrUpdateSheets(sheetData, collection)
