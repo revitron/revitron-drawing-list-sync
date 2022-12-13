@@ -15,12 +15,12 @@ def confirmParameterCreation(key):
 	return False
 
 
-def createOrUpdateSheets(drawingList, collection):
+def createOrUpdateSheets(drawingList, modelSheetCollection):
 	skipped = []
 	for item in drawingList.all():
 		number = item.Key
 		data = item.Value
-		sheet = collection.get(number)
+		sheet = modelSheetCollection.get(number)
 		if not sheet:
 			sheet = createSheet()
 		if _(sheet).isNotOwned():
