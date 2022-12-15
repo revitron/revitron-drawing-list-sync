@@ -58,12 +58,23 @@ class Revision(object):
 class Revisions(GenericCollection):
 
 	valueType = Revision
+	maxLines = None
+
+	def __init__(self, maxLines):
+		self.maxLines = maxLines
+		super(Revisions, self).__init__()
 
 	def __str__(self):
 		text = ''
 		for rev in self._collection:
 			text += str(rev.Value) + '\r\n'
-		return text
+		lines = text.splitlines()[-self.maxLines:]
+		for n in range(len(lines)):
+			if lines[n].startswith(' '):
+				del (lines[n])
+			else:
+				break
+		return '\r\n'.join(lines)
 
 	def add(self, revision):
 		key = '{}_{}'.format(revision.index, revision.date)

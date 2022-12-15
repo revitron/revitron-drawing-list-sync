@@ -24,7 +24,7 @@ def getRevisionsFromCsv(file, revisionsRow, sheetNumberCol, format):
 		nr = row[sheetNumberCol]
 		if not nr:
 			continue
-		sheetRevisions = Revisions()
+		sheetRevisions = Revisions(format.maxLines)
 		for item in revisionCols:
 			col = item[0]
 			if not row[col]:
@@ -43,10 +43,12 @@ class RevisionFormat(object):
 	maxCharsIndex = None
 	maxCharsDate = None
 	maxCharsTitle = None
+	maxLines = None
 	dateFormat = None
 
 	def __init__(self, config):
 		self.maxCharsIndex = config.maxCharsIndex
 		self.maxCharsDate = config.maxCharsDate
 		self.maxCharsTitle = config.maxCharsTitle
+		self.maxLines = config.maxRevisionLines
 		self.dateFormat = config.dateFormat

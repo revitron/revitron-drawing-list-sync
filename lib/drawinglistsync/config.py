@@ -17,6 +17,7 @@ class Config:
 	maxCharsIndex = None
 	maxCharsDate = None
 	maxCharsTitle = None
+	maxRevisionLines = None
 	dateFormat = None
 
 	def __init__(self):
@@ -33,4 +34,5 @@ class Config:
 		self.maxCharsIndex = int(config.get('maxCharsIndex', '4'))
 		self.maxCharsDate = int(config.get('maxCharsDate', '12'))
 		self.maxCharsTitle = int(config.get('maxCharsTitle', '36'))
+		self.maxRevisionLines = int(config.get('maxRevisionLines', '10'))
 		self.dateFormat = config.get('dateFormat', r'%d.%m.%Y')
