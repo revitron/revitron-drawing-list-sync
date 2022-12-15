@@ -1,25 +1,7 @@
 import re
-import datetime
 from revitron import DB
+from drawinglistsync.date import DATE_REGEX, normalizeDateString
 from System.Collections.Generic import Dictionary
-
-DATE_REGEX = '(\d{1,2}\.\d{1,2}\.\d{4}|\d{6}|\d{4}-\d{2}-\d{2})'
-
-
-def normalizeDateString(dateString, outputFormat):
-	formats = [
-	    r'%d.%m.%Y',  # 31.01.2023
-	    r'%y%m%d',  # 230131
-	    r'%Y-%m-%d',  # 2023-01-31
-	]
-	for format in formats:
-		try:
-			date = datetime.datetime.strptime(dateString, format)
-			if date:
-				return date.strftime(outputFormat)
-		except:
-			pass
-	return ''
 
 
 class GenericCollection(object):

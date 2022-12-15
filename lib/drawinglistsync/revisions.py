@@ -1,12 +1,9 @@
 import csv
 import datetime
 from drawinglistsync.collections import Revision, Revisions, RevisionsList
+from drawinglistsync.date import getDateFromString
 
 REVISIONS_MAX_COLS = 750
-
-
-def getDateFromString(dateString):
-	return datetime.datetime.strptime(dateString, r'%d.%m.%Y')
 
 
 def getRevisionCols(rows, revisionsRow):
