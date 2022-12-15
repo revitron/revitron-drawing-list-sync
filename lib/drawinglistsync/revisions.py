@@ -46,8 +46,10 @@ class RevisionFormat(object):
 	maxCharsIndex = None
 	maxCharsDate = None
 	maxCharsTitle = None
+	dateFormat = None
 
 	def __init__(self, config):
 		self.maxCharsIndex = config.maxCharsIndex
 		self.maxCharsDate = config.maxCharsDate
 		self.maxCharsTitle = config.maxCharsTitle
+		self.dateFormat = config.dateFormat

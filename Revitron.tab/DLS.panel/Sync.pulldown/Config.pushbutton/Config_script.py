@@ -4,7 +4,7 @@ from revitron.ui import TabWindow, TextBox, CheckBox
 
 config = Config()
 window = TabWindow(
-    'Drawing List Sync Configuration', ['Sheets', 'Revisions'], width=550, height=550
+    'Drawing List Sync Configuration', ['Sheets', 'Revisions'], width=550, height=600
 )
 
 CheckBox.create(
@@ -83,6 +83,10 @@ TextBox.create(
     'maxCharsTitle',
     str(config.maxCharsTitle),
     title='Maximum Title Length'
+)
+
+TextBox.create(
+    window, 'Revisions', 'dateFormat', str(config.dateFormat), title='Date Format'
 )
 
 window.show()

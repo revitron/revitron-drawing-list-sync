@@ -17,6 +17,7 @@ class Config:
 	maxCharsIndex = None
 	maxCharsDate = None
 	maxCharsTitle = None
+	dateFormat = None
 
 	def __init__(self):
 		config = DocumentConfigStorage().get(CONFIG_KEY, dict())
@@ -32,3 +33,4 @@ class Config:
 		self.maxCharsIndex = int(config.get('maxCharsIndex', '4'))
 		self.maxCharsDate = int(config.get('maxCharsDate', '12'))
 		self.maxCharsTitle = int(config.get('maxCharsTitle', '36'))
+		self.dateFormat = config.get('dateFormat', r'%d.%m.%Y')
