@@ -4,7 +4,23 @@ from revitron.ui import TabWindow, TextBox, CheckBox
 
 config = Config()
 window = TabWindow(
-    'Drawing List Sync Configuration', ['Sheets', 'Revisions'], width=550, height=360
+    'Drawing List Sync Configuration', ['Sheets', 'Revisions'], width=550, height=550
+)
+
+CheckBox.create(
+    window,
+    'Sheets',
+    'createMissingSheets',
+    config.createMissingSheets,
+    title='Create Missing Sheets'
+)
+
+CheckBox.create(
+    window,
+    'Sheets',
+    'createMissingParameters',
+    config.createMissingParameters,
+    title='Create Missing Parameters'
 )
 
 TextBox.create(window, 'Sheets', 'xlsFile', config.xlsFile, title='Excel File Path')
@@ -24,8 +40,8 @@ TextBox.create(
 CheckBox.create(
     window,
     'Revisions',
-    'revisionsEnabled',
-    config.revisionsEnabled,
+    'createRevisionList',
+    config.createRevisionList,
     title='Enable Parsing Revisions'
 )
 
@@ -43,6 +59,30 @@ TextBox.create(
     'revisionsField',
     str(config.revisionsField),
     title='Revisions Text Parameter Name'
+)
+
+TextBox.create(
+    window,
+    'Revisions',
+    'maxCharsIndex',
+    str(config.maxCharsIndex),
+    title='Maximum Index Length'
+)
+
+TextBox.create(
+    window,
+    'Revisions',
+    'maxCharsDate',
+    str(config.maxCharsDate),
+    title='Maximum Date Length'
+)
+
+TextBox.create(
+    window,
+    'Revisions',
+    'maxCharsTitle',
+    str(config.maxCharsTitle),
+    title='Maximum Title Length'
 )
 
 window.show()

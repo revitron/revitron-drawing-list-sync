@@ -40,18 +40,23 @@ class Revision(object):
 	index = ''
 	date = ''
 	title = ''
+	format = None
 
-	def __init__(self, index, text):
+	def __init__(self, index, text, format):
 		matches = re.match('^(\d{1,2}\.\d{1,2}\.\d{4})(.*)$', text, re.MULTILINE)
-		self.index = index.ljust(5)
+		self.index = index.ljust(format.maxCharsIndex)
+		self.format = format
 		try:
-			self.date = normalizeDateString(matches.group(1)).ljust(14)
-			self.title = matches.group(2).lstrip()
+			self.date = normalizeDateString(matches.group(1)).ljust(format.maxCharsDate)
+			title = matches.group(2).lstrip()
+			if len(title) > format.maxCharsTitle:
+				title = title[:format.maxCharsTitle] + ' ...'
+			self.title = title
 		except:
 			pass
 
 	def __str__(self):
-		return '{}{}{}'.format(self.index, self.date, self.title)
+		return '{} {} {}'.format(self.index, self.date, self.title)
 
 
 class Revisions(GenericCollection):
@@ -68,7 +73,8 @@ class Revisions(GenericCollection):
 		key = '{}_{}'.format(revision.index, revision.date)
 		_rev = self.get(key)
 		if _rev:
-			_rev.title += ' / {}'.format(revision.title)
+			space = (_rev.format.maxCharsIndex + _rev.format.maxCharsDate + 2) * ' '
+			_rev.title += '\r\n{}{}'.format(space, revision.title)
 		else:
 			self._collection.Add(key, revision)
 

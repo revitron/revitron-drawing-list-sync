@@ -14,7 +14,7 @@ def getRevisionCols(rows, revisionsRow):
 	return [(value, row[value]) for value in row if row[value]]
 
 
-def getRevisionsFromCsv(file, revisionsRow, sheetNumberCol):
+def getRevisionsFromCsv(file, revisionsRow, sheetNumberCol, format):
 	revisionsList = RevisionsList()
 	rows = []
 	with open(file) as f:
@@ -32,10 +32,22 @@ def getRevisionsFromCsv(file, revisionsRow, sheetNumberCol):
 			col = item[0]
 			if not row[col]:
 				continue
-			rev = Revision(row[col], item[1])
+			rev = Revision(row[col], item[1], format)
 			date = getDateFromString(rev.date)
 			sheetRevisions.add(rev)
 			if date >= datetime.datetime.now():
 				break
 		revisionsList.add(nr, sheetRevisions)
 	return revisionsList
+
+
+class RevisionFormat(object):
+
+	maxCharsIndex = None
+	maxCharsDate = None
+	maxCharsTitle = None
+
+	def __init__(self, config):
+		self.maxCharsIndex = config.maxCharsIndex
+		self.maxCharsDate = config.maxCharsDate
+		self.maxCharsTitle = config.maxCharsTitle

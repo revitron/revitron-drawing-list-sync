@@ -20,7 +20,7 @@ def getParameterCols(rows, parameterRow):
 	return [(value, row[value]) for value in row if row[value]]
 
 
-def getDrawinglistFromCsv(file, parameterRow):
+def getDrawinglistFromCsv(file, parameterRow, sheetIdParameter):
 	drawingList = DrawingList()
 	rows = []
 	with open(file) as f:
@@ -28,7 +28,7 @@ def getDrawinglistFromCsv(file, parameterRow):
 		for row in reader:
 			rows.append(row)
 	parameterCols = getParameterCols(rows, parameterRow)
-	sheetNumberCol = [item[0] for item in parameterCols if item[1] == 'Sheet Number'][0]
+	sheetNumberCol = [item[0] for item in parameterCols if item[1] == sheetIdParameter][0]
 	for n in range(parameterRow, len(rows)):
 		row = rows[n]
 		nr = row[sheetNumberCol]
