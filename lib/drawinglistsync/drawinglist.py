@@ -11,7 +11,7 @@ def createCsvFile(xls, worksheet):
 	tmp = mkdtemp()
 	convert = join(dirname(__file__), 'convert.bat')
 	csvSheets = join(tmp, 'sheets.csv')
-	system('{} {} {} {}'.format(convert, xls, worksheet, csvSheets))
+	system('{} "{}" "{}" "{}"'.format(convert, xls, worksheet, csvSheets))
 	return csvSheets
 
 
