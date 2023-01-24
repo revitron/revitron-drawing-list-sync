@@ -3,7 +3,7 @@ import datetime
 from drawinglistsync.collections import Revision, Revisions, RevisionsList
 from drawinglistsync.date import getDateFromString
 
-REVISIONS_MAX_COLS = 750
+REVISIONS_MAX_COLS = 1000
 
 
 def getRevisionCols(rows, revisionsRow):
@@ -29,11 +29,14 @@ def getRevisionsFromCsv(file, revisionsRow, sheetNumberCol, format):
 			col = item[0]
 			if not row[col]:
 				continue
-			rev = Revision(row[col], item[1], format)
-			date = getDateFromString(rev.date)
-			sheetRevisions.add(rev)
-			if date >= datetime.datetime.now():
-				break
+			try:
+				rev = Revision(row[col], item[1], format)
+				date = getDateFromString(rev.date)
+				sheetRevisions.add(rev)
+				if date >= datetime.datetime.now():
+					break
+			except:
+				pass
 		revisionsList.add(nr, sheetRevisions)
 	return revisionsList
 

@@ -1,18 +1,21 @@
 import csv
+import shutil
 from drawinglistsync.collections import DrawingList
 from os import system
 from os.path import dirname, join
 from tempfile import mkdtemp
 
-PARAM_MAX_COLS = 25
+PARAM_MAX_COLS = 1000
 
 
 def createCsvFile(xls, worksheet):
-	tmp = mkdtemp()
+	tmp = mkdtemp(prefix='drawinglistsync')
+	copy = join(tmp, 'sheets.xls')
+	csv = join(tmp, 'sheets.csv')
 	convert = join(dirname(__file__), 'convert.bat')
-	csvSheets = join(tmp, 'sheets.csv')
-	system('{} "{}" "{}" "{}"'.format(convert, xls, worksheet, csvSheets))
-	return csvSheets
+	shutil.copyfile(xls, copy)
+	system('{} "{}" "{}" "{}"'.format(convert, copy, worksheet, csv))
+	return csv
 
 
 def getParameterCols(rows, parameterRow):
@@ -35,8 +38,11 @@ def getDrawinglistFromCsv(file, parameterRow, sheetIdParameter):
 		if nr:
 			data = {}
 			for item in parameterCols:
-				col = item[0]
-				name = item[1]
-				data[name] = row[col]
+				try:
+					col = item[0]
+					name = item[1]
+					data[name] = row[col]
+				except:
+					pass
 			drawingList.add(nr, data)
 	return drawingList, sheetNumberCol

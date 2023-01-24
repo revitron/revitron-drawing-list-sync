@@ -26,7 +26,7 @@ CheckBox.create(
 TextBox.create(window, 'Sheets', 'xlsFile', config.xlsFile, title='Excel File Path')
 
 TextBox.create(
-    window, 'Sheets', 'worksheet', str(config.worksheet), title='Worksheet Drawing List'
+    window, 'Sheets', 'worksheet', str(config.worksheet), title='Worksheet Name'
 )
 
 TextBox.create(
