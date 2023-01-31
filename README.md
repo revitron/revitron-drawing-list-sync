@@ -85,7 +85,7 @@ Additionally to just sync sheets parameters, it is also possible to create revis
 
 ### Example
 
-|       | A | B | C | ... | H | I | J | K |
+|       | A | B | C | ... | H | I | J | ... |
 |-------|---|---|---|---|---|---|---|---|
 | **1** | Some title |
 | **2** | Sheet Number | Sheet Name | Level |     |
