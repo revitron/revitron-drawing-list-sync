@@ -102,7 +102,7 @@ TextBox.create(
     'Revisions',
     'maxRevisionLines',
     str(config.maxRevisionLines),
-    title='Maximum Number of Lines in Revision List'
+    title='Maximum Number of Lines'
 )
 
 window.show()
