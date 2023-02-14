@@ -1,5 +1,6 @@
 from revitron import _, DB, DOC
-import date
+import drawinglistsync.date
+import drawinglistsync.config
 import re
 
 def createOrUpdateSheets(drawingList, revisionList, modelSheetCollection, config):
@@ -14,9 +15,10 @@ def createOrUpdateSheets(drawingList, revisionList, modelSheetCollection, config
 		if _(sheet).isNotOwned():
 			for key, value in data.items():
 				if _(sheet).getParameter(key).exists() or config.createMissingParameters:
-					# conversion of US formated dates from CSV to defined format
-					if date.isUSDate(value):
-							value = date.normalizeDateString(value, date.DATE_FORMATS[0])
+					# conversion of US formated dates from CSV to configured format
+					if drawinglistsync.date.isUsDate(value):
+							value = drawinglistsync.date.normalizeDateString(value,
+													 config.dateFormat)
 					_(sheet).set(key, value)
 			sheetRevisions = revisionList.get(number)
 			if sheetRevisions:
