@@ -16,9 +16,16 @@ def createOrUpdateSheets(drawingList, revisionList, modelSheetCollection, config
 			for key, value in data.items():
 				if _(sheet).getParameter(key).exists() or config.createMissingParameters:
 					# conversion of US formated dates from CSV to configured format
-					if drawinglistsync.date.isUsDate(value):
-							value = drawinglistsync.date.normalizeDateString(value,
-													 config.dateFormat)
+					if drawinglistsync.date.isUsDateFormat(value):
+							sourceValue = value
+							value = drawinglistsync.date.normalizeDateString(
+									value,
+									config.dateFormat)
+							if not value:
+								print (
+										sourceValue + 
+	       								" is not a valid US date format (mm/dd/yyyy), please review.")
+								value = sourceValue
 					_(sheet).set(key, value)
 			sheetRevisions = revisionList.get(number)
 			if sheetRevisions:
